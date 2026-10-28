@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/onsite-event-guide/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Setup Checklist</title>
+    <meta name="description" content="Consistent, reliable, error-free event setup checklist for event support teams.">
+    <meta name="author" content="McKinsey" />
+    <meta property="og:title" content="Event Setup Checklist">
+  <meta name="twitter:title" content="Event Setup Checklist">
+  <meta property="og:description" content="Consistent, reliable, error-free event setup checklist for event support teams.">
+  <meta name="twitter:description" content="Consistent, reliable, error-free event setup checklist for event support teams.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    (function () {
+      var safeProtocols = { "mailto:": true, "tel:": true, "data:": true, "blob:": true };
+
+      function parseUrl(rawUrl) {
+        try {
+          return new URL(String(rawUrl || ""), window.location.href);
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function isSafeUrl(rawUrl) {
+        var url = parseUrl(rawUrl);
+        if (!url) return true;
+        return url.origin === window.location.origin || safeProtocols[url.protocol] === true;
+      }
+
+      function blockExternalUrl(rawUrl) {
+        if (!rawUrl || isSafeUrl(rawUrl)) return false;
+        window.__blockedExternalUrl = parseUrl(rawUrl).href;
+        try {
+          window.dispatchEvent(new CustomEvent("lovable-external-navigation-blocked", {
+            detail: { url: window.__blockedExternalUrl }
+          }));
+        } catch (error) {}
+        return true;
+      }
+
+      var originalOpen = window.open;
+      window.open = function (url, target, features) {
+        if (url !== undefined && blockExternalUrl(url)) return null;
+        return originalOpen.call(window, url, target, features);
+      };
+
+      document.addEventListener("click", function (event) {
+        var target = event.target;
+        if (!target || !target.closest) return;
+        var anchor = target.closest("a[href]");
+        if (!anchor) return;
+        var href = anchor.getAttribute("href");
+        if (!href || href.charAt(0) === "#" || !blockExternalUrl(href)) return;
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+      }, true);
+    })();
+  </script>
+  <script type="module" crossorigin src="/onsite-event-guide/assets/index-DuoEkd5Z.js"></script>
+  <link rel="stylesheet" crossorigin href="/onsite-event-guide/assets/index-CbwS_0tG.css">
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
